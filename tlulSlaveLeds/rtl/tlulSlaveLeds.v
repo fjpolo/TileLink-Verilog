@@ -77,6 +77,8 @@ module tlulSlaveLeds #(
     // Internal register for the LEDs
     logic [7:0] r_leds;
     localparam LEDS_REG_ADDR = 32'h0;
+    assign o_leds = r_leds; // Output the LED state
+
 
     // Response valid flag logic
     logic d_valid_next;
@@ -101,10 +103,6 @@ module tlulSlaveLeds #(
             o_d_denied <= 2'b0;
         end else begin
             // The slave is now out of i_reset. o_d_valid can be driven HIGH from the first rising edge.
-            
-            // Drive D channel
-            o_leds <= r_leds; // Output the LED state
-
             // Valid request
             if ((i_a_valid)&&(o_a_ready)) begin // Incoming request
                 if (i_a_address == LEDS_REG_ADDR) begin // Supported address
