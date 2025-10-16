@@ -21,7 +21,7 @@ fi
 
 # Compile the testbench and RTL module
 echo "        [ICARUS] Compiling testbench and RTL module..."
-iverilog -o "$OUTPUT" "$TESTBENCH" "$RTL_MODULE"
+iverilog -g2012 -o "$OUTPUT" "$TESTBENCH" "$RTL_MODULE"
 
 # Check if compilation was successful
 if [ $? -ne 0 ]; then
