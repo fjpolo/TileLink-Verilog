@@ -83,19 +83,22 @@
 	//
 	////////////////////////////////////////////////////   
 
-	// o_valid
-	always @(posedge i_clk)
+	// o_valid - MUST be HIGH next cycle if valid high, ready high, correct register address and Get opcode
+	always @(posedge i_clk) begin
 		if(
 			(f_past_valid)&&(!i_reset)&&
 			($past(f_past_valid))&&(!$past(i_reset))
-		  )
+		) begin
 			if(
-				($past(i_a_valid))&&($past(o_a_ready))&&
-				($past(i_a_address == LEDS_REG_ADDR))&&($past(i_a_opcode == 3'b000))
+				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
+				($past(i_a_address == LEDS_REG_ADDR))&&		// Correct register address
+				($past(i_a_opcode == 3'b000))				// Get Operation opcode
 			) begin
 			  assert(d_valid_next == 1'b1);
 			  assert(o_d_valid == 1'b1);
 			end
+		end
+	end
 
     ////////////////////////////////////////////////////
 	//
