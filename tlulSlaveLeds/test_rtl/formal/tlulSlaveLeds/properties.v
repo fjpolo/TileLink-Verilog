@@ -100,7 +100,7 @@
 		end
 	end
 
-	// Writing to register must match i_a_data on next clock cycle
+	// Put Operation: Writing to register must match i_a_data on next clock cycle
 	always @(posedge i_clk) begin
 		if(
 			(f_past_valid)&&(!i_reset)&&
@@ -113,6 +113,23 @@
 			) begin
 			  assert(o_d_valid == 1'b1);
 			  assert(r_leds == $past(i_a_data[7:0]));
+			end
+		end
+	end
+
+	// Get Operation
+	always @(posedge i_clk) begin
+		if(
+			(f_past_valid)&&(!i_reset)&&
+			($past(f_past_valid))&&(!$past(i_reset))
+		) begin
+			if(
+				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
+				($past(i_a_address == LEDS_REG_ADDR))&&		// Correct register address
+				($past(i_a_opcode == 3'b000))				// Get Operation opcode
+			) begin
+			  assert(o_d_valid == 1'b1);
+			  assert(o_d_data[7:0] == $past(r_leds[7:0]));
 			end
 		end
 	end
