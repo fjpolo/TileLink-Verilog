@@ -60,14 +60,14 @@
 	// signals
 	always @(posedge i_clk) begin
 		if((f_past_valid)&&($past(i_reset))) begin
-			assert(o_d_valid == 1'b0);
-			assert(r_leds == '0);
-            assert(o_d_opcode == 3'b0);
-            assert(o_d_param == 3'b0);
-            assert(o_d_size == 4'b0);
-            assert(o_d_source == 8'b0);
-            assert(o_d_data == 64'b0);
-            assert(o_d_denied == 2'b0);
+			assert(o_d_valid == 'b0);
+			assert(r_leds == 'b0);
+            assert(o_d_opcode == 'b0);
+            assert(o_d_param == 'b0);
+            assert(o_d_size == 'b0);
+            assert(o_d_source == 'b0);
+            assert(o_d_data == 'b0);
+            assert(o_d_denied == 'b0);
 		end
 	end
 
@@ -87,12 +87,12 @@
 			if(
 				($past(i_a_valid))&&($past(o_a_ready))&&		// Valid request
 				($past(i_a_address == LEDS_REG_ADDR))&&			// Correct register address
-				(!$past(i_a_opcode == 3'b000))&&
-				(!$past(i_a_opcode == 3'b001))
+				(!$past(i_a_opcode == 'b000))&&
+				(!$past(i_a_opcode == 'b001))
 			  ) begin
-			  assert(o_d_valid == 1'b1);
-			  assert(o_d_denied == 2'b1);
-			  assert(o_d_opcode == 3'b110); // HintAck
+			  assert(o_d_valid == 'b1);
+			  assert(o_d_denied == 'b1);
+			  assert(o_d_opcode == 'b110); // HintAck
 			end
 		end
 	end
@@ -108,9 +108,9 @@
 				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
 				($past(i_a_address != LEDS_REG_ADDR))		// Incorrect address
 			) begin
-				assert(o_d_valid == 1'b1);
-				assert(o_d_denied == 2'b1);
-				assert(o_d_opcode == 3'b110); // HintAck
+				assert(o_d_valid == 'b1);
+				assert(o_d_denied == 'b1);
+				assert(o_d_opcode == 'b110); // HintAck
 			end	
 		end
 	end
@@ -130,10 +130,10 @@
 			if(
 				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
 				($past(i_a_address == LEDS_REG_ADDR))&&		// Correct register address
-				($past(i_a_opcode == 3'b000))				// Get Operation opcode
+				($past(i_a_opcode == 'b000))				// Get Operation opcode
 			) begin
-			  assert(d_valid_next == 1'b1);
-			  assert(o_d_valid == 1'b1);
+			  assert(d_valid_next == 'b1);
+			  assert(o_d_valid == 'b1);
 			end
 		end
 	end
@@ -147,9 +147,9 @@
 			if(
 				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
 				($past(i_a_address == LEDS_REG_ADDR))&&		// Correct register address
-				($past(i_a_opcode == 3'b001))				// Put Operation opcode
+				($past(i_a_opcode == 'b001))				// Put Operation opcode
 			) begin
-			  assert(o_d_valid == 1'b1);
+			  assert(o_d_valid == 'b1);
 			  assert(r_leds == $past(i_a_data[7:0]));
 			end
 		end
@@ -164,9 +164,9 @@
 			if(
 				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
 				($past(i_a_address == LEDS_REG_ADDR))&&		// Correct register address
-				($past(i_a_opcode == 3'b000))				// Get Operation opcode
+				($past(i_a_opcode == 'b000))				// Get Operation opcode
 			) begin
-			  assert(o_d_valid == 1'b1);
+			  assert(o_d_valid == 'b1);
 			  assert(o_d_data[7:0] == $past(r_leds[7:0]));
 			end
 		end
@@ -180,7 +180,7 @@
 			($past(f_past_valid))&&(!$past(i_reset))
 		) begin
 			if(!($past(i_a_valid)&&$past(o_a_ready))) begin
-			  assert(o_d_valid == 1'b0);
+			  assert(o_d_valid == 'b0);
 			end
 		end
 	end

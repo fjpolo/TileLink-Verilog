@@ -1,14 +1,15 @@
 # yosys script for tlulSlaveLeds.v
 
 # Read the Verilog file
-read_verilog tlulSlaveLeds.v
+read_verilog -sv tlulSlaveLeds.v
 
 # Synthesize the design
+synth -flatten
 synth_gowin -top tlulSlaveLeds -json tlulSlaveLeds.json
 
 # Generate a simple netlist graph (for visualization)
 # This is done every iteration.
-show -prefix maf_iter_01
+# show -prefix maf_iter_01
 
 # Clean up unused cells and wires
 clean
@@ -50,7 +51,7 @@ clean
 clean
 
 # Generate a final netlist graph (after all optimizations)
-#show -prefix maf_final
+show -prefix maf_final
 
 # Write the synthesized netlist to a file (optional)
 write_verilog template_synth.v

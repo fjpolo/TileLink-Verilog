@@ -112,35 +112,35 @@ module tlulSlaveLeds #(
                         3'b000: begin // Get (Read)
                             o_d_opcode <= 3'b100; // AccessAckData
                             o_d_data <= {{(TL_DATA_WIDTH - 8){1'b0}}, r_leds}; 
-                            d_valid_next <= 1'b1;
+                            d_valid_next <= 'b1;
                         end
                         3'b001: begin // PutFullData (Write)
                             r_leds <= i_a_data[7:0]; // Write the lower 8 bits
-                            o_d_opcode <= 3'b010; // AccessAck
-                            o_d_data <= 64'b0;
-                            d_valid_next <= 1'b1;
+                            o_d_opcode <= 'b010; // AccessAck
+                            o_d_data <= 'b0;
+                            d_valid_next <= 'b1;
                         end
                         default: begin // Unsupported opcode
-                            o_d_opcode <= 3'b110; // HintAck (or error)
-                            o_d_data <= 64'b0;
-                            d_valid_next <= 1'b1;
-                            o_d_denied <= 2'b1;
+                            o_d_opcode <= 'b110; // HintAck (or error)
+                            o_d_data <= 'b0;
+                            d_valid_next <= 'b1;
+                            o_d_denied <= 'b1;
                         end
                     endcase
                 end else begin // Unsupported address
-                    o_d_opcode <= 3'b110; // HintAck
-                    o_d_data <= 64'b0;
-                    d_valid_next <= 1'b1;
-                    o_d_denied <= 2'b1;
+                    o_d_opcode <= 'b110; // HintAck
+                    o_d_data <= 'b0;
+                    d_valid_next <= 'b1;
+                    o_d_denied <= 'b1;
                 end
 
                 // Common D-channel assignments
-                o_d_param <= 3'b0;
+                o_d_param <= 'b0;
                 o_d_size <= i_a_size;
                 o_d_source <= i_a_source;
                 // Note: o_d_denied is set in the case statement above if needed, otherwise it retains i_reset/previous value.
             end else begin
-                d_valid_next <= 1'b0; // No valid A-channel request this cycle
+                d_valid_next <= 'b0; // No valid A-channel request this cycle
             end
         end
     end
