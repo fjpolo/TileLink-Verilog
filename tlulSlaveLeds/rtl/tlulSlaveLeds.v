@@ -45,6 +45,9 @@
 `default_nettype none
 `timescale 1ps/1ps
 
+// TODO: Uncomment to initialize all registers
+// `define TL_FULL_INIT
+
 module tlulSlaveLeds #(
     parameter TL_DATA_WIDTH = 64,
     parameter TL_ADDR_WIDTH = 32
@@ -91,16 +94,18 @@ module tlulSlaveLeds #(
     always_ff @(posedge i_clk) begin
         if (i_reset) begin
             // 1. Slave MUST drive o_d_valid LOW during i_reset
-            d_valid_next <= 1'b0; 
+            d_valid_next <= 1'b0;   // Important to initialize 
             
             // 2. Clear internal state
-            r_leds <= '0;
-            o_d_opcode <= 3'b0;
-            o_d_param <= 3'b0;
-            o_d_size <= 4'b0;
-            o_d_source <= 8'b0;
-            o_d_data <= 64'b0;
-            o_d_denied <= 2'b0;
+            r_leds <= '0;       // Important to initialize
+`ifdef TL_FULL_INIT
+            o_d_opcode <= 3'b0; // Initialization could be ignored because o_d_valid initializes as 0
+            o_d_param <= 3'b0;  // Initialization could be ignored because o_d_valid initializes as 0
+            o_d_size <= 4'b0;   // Initialization could be ignored because o_d_valid initializes as 0
+            o_d_source <= 8'b0; // Initialization could be ignored because o_d_valid initializes as 0
+            o_d_data <= 64'b0;  // Initialization could be ignored because o_d_valid initializes as 0
+            o_d_denied <= 2'b0; // Initialization could be ignored because o_d_valid initializes as 0
+`endif // TL_FULL_INIT
         end else begin
             // The slave is now out of i_reset. o_d_valid can be driven HIGH from the first rising edge.
             // Valid request

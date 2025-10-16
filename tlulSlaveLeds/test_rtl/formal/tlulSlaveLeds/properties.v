@@ -62,12 +62,14 @@
 		if((f_past_valid)&&($past(i_reset))) begin
 			assert(o_d_valid == 'b0);
 			assert(r_leds == 'b0);
+`ifdef TL_LOW_USAGE
             assert(o_d_opcode == 'b0);
             assert(o_d_param == 'b0);
             assert(o_d_size == 'b0);
             assert(o_d_source == 'b0);
             assert(o_d_data == 'b0);
             assert(o_d_denied == 'b0);
+`endif
 		end
 	end
 
