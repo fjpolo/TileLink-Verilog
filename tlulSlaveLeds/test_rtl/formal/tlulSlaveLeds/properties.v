@@ -111,16 +111,11 @@
 	// Cover
 	//
 	////////////////////////////////////////////////////     
-	
-	// // i_a_opcode == 3'b000 (get)
-	// always @(posedge i_clk)
-	// 	if((f_past_valid)&&(!i_reset)&&(i_a_valid)&&(o_a_ready)&&(i_a_address == LEDS_REG_ADDR)&&(i_a_opcode == 3'b000))
-	// 		cover(i_a_opcode == 3'b000);
 
-	// // o_d_valid
-	// always @(posedge i_clk)
-	// 	if((f_past_valid)&&(!i_reset)&&(i_a_valid)&&(o_a_ready)&&(i_a_opcode == 3'b000))
-	// 		cover(d_valid_next);
+	// o_d_valid
+	always @(posedge i_clk)
+		if((f_past_valid)&&(!i_reset))
+			cover(d_valid_next);
 
 `endif
 
