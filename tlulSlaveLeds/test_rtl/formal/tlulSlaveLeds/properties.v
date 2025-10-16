@@ -2,7 +2,7 @@
 // File        : Formal Properties for tlulSlaveLeds.v
 // Author      : @fjpolo
 // email       : fjpolo@gmail.com
-// Description : <Brief description of the module or file>
+// Description : Basic TileLink UL slave: 8xLED controller with Put and Get. White Box Formal Properties
 // License     : MIT License
 //
 // Copyright (c) 2025 | @fjpolo
@@ -52,6 +52,25 @@
 	//
 	////////////////////////////////////////////////////
 
+	// i_reset
+	always @(posedge i_clk)
+		if(!f_past_valid)
+			assume(i_reset);
+
+	// signals
+	always @(posedge i_clk) begin
+		if((f_past_valid)&&($past(i_reset))) begin
+			assert(o_d_valid == 1'b0);
+			assert(r_leds == '0);
+            assert(o_d_opcode == 3'b0);
+            assert(o_d_param == 3'b0);
+            assert(o_d_size == 4'b0);
+            assert(o_d_source == 8'b0);
+            assert(o_d_data == 64'b0);
+            assert(o_d_denied == 2'b0);
+		end
+	end
+
     ////////////////////////////////////////////////////
 	//
 	// BMC
@@ -75,6 +94,16 @@
 	// Cover
 	//
 	////////////////////////////////////////////////////     
-           
+	
+	// // i_a_opcode == 3'b000 (get)
+	// always @(posedge i_clk)
+	// 	if((f_past_valid)&&(!i_reset)&&(i_a_valid)&&(o_a_ready)&&(i_a_address == LEDS_REG_ADDR)&&(i_a_opcode == 3'b000))
+	// 		cover(i_a_opcode == 3'b000);
+
+	// // o_d_valid
+	// always @(posedge i_clk)
+	// 	if((f_past_valid)&&(!i_reset)&&(i_a_valid)&&(o_a_ready)&&(i_a_opcode == 3'b000))
+	// 		cover(d_valid_next);
+
 `endif
 
