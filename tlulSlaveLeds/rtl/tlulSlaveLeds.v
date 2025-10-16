@@ -80,6 +80,7 @@ module tlulSlaveLeds #(
 
     // Response valid flag logic
     logic d_valid_next;
+    assign o_d_valid = d_valid_next; 
 
     // The slave is always ready to accept a request (simplification for TL-UL register)
     assign o_a_ready = 1'b1;
@@ -88,7 +89,7 @@ module tlulSlaveLeds #(
     always_ff @(posedge i_clk) begin
         if (i_reset) begin
             // 1. Slave MUST drive o_d_valid LOW during i_reset
-            o_d_valid <= 1'b0; 
+            d_valid_next <= 1'b0; 
             
             // 2. Clear internal state
             r_leds <= '0;
@@ -102,7 +103,6 @@ module tlulSlaveLeds #(
             // The slave is now out of i_reset. o_d_valid can be driven HIGH from the first rising edge.
             
             // Drive D channel
-            o_d_valid <= d_valid_next; 
             o_leds <= r_leds; // Output the LED state
 
             // Valid request

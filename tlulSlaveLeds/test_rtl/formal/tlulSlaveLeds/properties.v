@@ -83,6 +83,20 @@
 	//
 	////////////////////////////////////////////////////   
 
+	// o_valid
+	always @(posedge i_clk)
+		if(
+			(f_past_valid)&&(!i_reset)&&
+			($past(f_past_valid))&&(!$past(i_reset))
+		  )
+			if(
+				($past(i_a_valid))&&($past(o_a_ready))&&
+				($past(i_a_address == LEDS_REG_ADDR))&&($past(i_a_opcode == 3'b000))
+			) begin
+			  assert(d_valid_next == 1'b1);
+			  assert(o_d_valid == 1'b1);
+			end
+
     ////////////////////////////////////////////////////
 	//
 	// Induction
