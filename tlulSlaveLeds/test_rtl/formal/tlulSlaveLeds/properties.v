@@ -97,6 +97,24 @@
 		end
 	end
 
+	// Unsupported Address
+	// Assert that an unsupported address results in a HintAck (3'b110) and Denial (2'b1).
+	always @(posedge i_clk) begin
+		if(
+			(f_past_valid)&&(!i_reset)&&
+			($past(f_past_valid))&&(!$past(i_reset))
+		) begin
+			if(
+				($past(i_a_valid))&&($past(o_a_ready))&&	// Valid request
+				($past(i_a_address != LEDS_REG_ADDR))		// Incorrect address
+			) begin
+				assert(o_d_valid == 1'b1);
+				assert(o_d_denied == 2'b1);
+				assert(o_d_opcode == 3'b110); // HintAck
+			end	
+		end
+	end
+
     ////////////////////////////////////////////////////
 	//
 	// Contract
