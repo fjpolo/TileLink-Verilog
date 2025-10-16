@@ -46,7 +46,7 @@
 `timescale 1ps/1ps
 
 // TODO: Uncomment to initialize all registers
-// `define TL_FULL_INIT
+// `define TL_FULL_INIT // Commented saves 49LEs
 
 module tlulSlaveLeds #(
     parameter TL_DATA_WIDTH = 64,
