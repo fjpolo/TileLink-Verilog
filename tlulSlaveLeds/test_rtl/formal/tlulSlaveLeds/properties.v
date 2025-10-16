@@ -76,6 +76,26 @@
 	// BMC
 	//
 	////////////////////////////////////////////////////
+	
+	// Unsupported Opcode
+	// Assert that an unsupported opcode results in a HintAck (3'b110) and Denial (2'b1).
+	always @(posedge i_clk) begin
+		if(
+			(f_past_valid)&&(!i_reset)&&
+			($past(f_past_valid))&&(!$past(i_reset))
+		) begin
+			if(
+				($past(i_a_valid))&&($past(o_a_ready))&&		// Valid request
+				($past(i_a_address == LEDS_REG_ADDR))&&			// Correct register address
+				(!$past(i_a_opcode == 3'b000))&&
+				(!$past(i_a_opcode == 3'b001))
+			  ) begin
+			  assert(o_d_valid == 1'b1);
+			  assert(o_d_denied == 2'b1);
+			  assert(o_d_opcode == 3'b110); // HintAck
+			end
+		end
+	end
 
     ////////////////////////////////////////////////////
 	//
@@ -130,6 +150,19 @@
 			) begin
 			  assert(o_d_valid == 1'b1);
 			  assert(o_d_data[7:0] == $past(r_leds[7:0]));
+			end
+		end
+	end
+
+	// Ready-Valid handshake
+	// o_d_valid must be LOW when there was no active request on Channel A in the previous cycle. (No spurious response)
+	always @(posedge i_clk) begin
+		if(
+			(f_past_valid)&&(!i_reset)&&
+			($past(f_past_valid))&&(!$past(i_reset))
+		) begin
+			if(!($past(i_a_valid)&&$past(o_a_ready))) begin
+			  assert(o_d_valid == 1'b0);
 			end
 		end
 	end
