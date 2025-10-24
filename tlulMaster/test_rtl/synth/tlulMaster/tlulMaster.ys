@@ -1,7 +1,7 @@
 # yosys script for tlulMaster.v
 
 # Read the Verilog file
-read_verilog tlulMaster.v
+read_verilog -sv tlulMaster.v
 
 # Synthesize the design
 synth_gowin -top tlulMaster -json tlulMaster.json
