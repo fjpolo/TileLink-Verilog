@@ -29,6 +29,9 @@
 `default_nettype none
 `timescale 1ns/1ps
 
+// TODO: Uncomment to initialize all registers
+// `define TL_FULL_INIT // Commented saves LEs
+
 module tlulMaster #(
     parameter TL_DATA_WIDTH = 64,
     parameter TL_ADDR_WIDTH = 32
@@ -37,7 +40,7 @@ module tlulMaster #(
     input  logic i_clk,
     input  logic i_reset,
 
-    // --- Generic Master Interface (Handshake Protocol) ---
+    // Generic Master Interface (Handshake Protocol) 
     input  logic i_req,            // Request signal from external module
     output logic o_ack,            // Acknowledge signal (transaction complete)
     output logic o_busy,           // Master is processing a transaction
@@ -46,7 +49,7 @@ module tlulMaster #(
     input  logic [(TL_DATA_WIDTH-1):0] i_wdata,    // Write data (valid if i_write=1)
     output logic [(TL_DATA_WIDTH-1):0] o_rdata,    // Read data (valid if o_ack=1 and i_write=0)
 
-    // --- TileLink Channel A (Request to Slave) ---
+    // TileLink Channel A (Request to Slave) 
     output logic o_a_valid,
     input  logic i_a_ready,
     output logic [2:0] o_a_opcode,
@@ -55,7 +58,7 @@ module tlulMaster #(
     output logic [(TL_ADDR_WIDTH-1):0] o_a_address,
     output logic [(TL_DATA_WIDTH-1):0] o_a_data,
 
-    // --- TileLink Channel D (Response from Slave) ---
+    // TileLink Channel D (Response from Slave) 
     input  logic i_d_valid,
     output logic o_d_ready,
     input  logic [2:0] i_d_opcode,
@@ -64,7 +67,7 @@ module tlulMaster #(
     input  logic [(TL_DATA_WIDTH-1):0] i_d_data 
 );
 
-    // --- Local Parameters for TileLink Operations ---
+    // Local Parameters for TileLink Operations 
     localparam TL_OP_PUT_FULL_DATA = 3'b001; // Write Request
     localparam TL_OP_GET           = 3'b100; // Read Request
     localparam TL_OP_ACCESS_ACK    = 3'b010; // Write Acknowledge
@@ -73,7 +76,7 @@ module tlulMaster #(
     localparam DEFAULT_SIZE        = 4'b011; // 8 bytes (64-bit)
     localparam SOURCE_ID           = 8'h0A;
 
-    // --- State Machine ---
+    // State Machine 
     typedef enum {
         RESET_ST,       // Initial state after reset
         IDLE_ST,        // Waiting for i_req
@@ -82,7 +85,7 @@ module tlulMaster #(
         ACK_ST          // Asserting o_ack for one cycle
     } master_state_t;
 
-    // --- Internal Registers (Sequential Logic) ---
+    // Internal Registers (Sequential Logic) 
     master_state_t r_state; 
     logic r_a_valid; 
     logic r_d_ready; 
@@ -95,7 +98,7 @@ module tlulMaster #(
     logic [(TL_DATA_WIDTH-1):0] r_wdata; // Now synchronous, only assigned with <=
     logic [(TL_DATA_WIDTH-1):0] r_rdata_captured; // Captured read data
 
-    // --- Combinational Signals (Next State/Output Logic) ---
+    // Combinational Signals (Next State/Output Logic) 
     master_state_t r_next_state;
     logic r_a_valid_next;
     logic r_d_ready_next;
@@ -103,7 +106,7 @@ module tlulMaster #(
     logic r_busy_next;
     logic [(TL_DATA_WIDTH-1):0] r_rdata_captured_next;
 
-    // --- Output Assignments ---
+    // Output Assignments 
     assign o_a_valid = r_a_valid;
     assign o_d_ready = r_d_ready;
     assign o_ack     = r_ack;
@@ -118,7 +121,7 @@ module tlulMaster #(
     assign o_a_data    = r_wdata; // Only relevant for writes, but driven constantly
 
 
-    // --- Combinational Logic: FSM and Next Outputs ---
+    // Combinational Logic: FSM and Next Outputs 
     always @(*) begin
         // Default assignments (hold current state/value)
         r_next_state          = r_state;
@@ -185,7 +188,7 @@ module tlulMaster #(
         endcase
     end
 
-    // --- Sequential Logic: Register Updates ---
+    // Sequential Logic: Register Updates 
     always @(posedge i_clk) begin
         if (i_reset) begin
             r_state           <= RESET_ST;
