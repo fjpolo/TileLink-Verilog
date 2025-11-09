@@ -43,7 +43,9 @@
 	initial	f_past_valid = 0;
 	always @(posedge i_clk)
 		f_past_valid <= 1'b1;
-
+	always @(posedge i_clk)
+		if(!f_past_valid)
+			assume(!i_reset_n);
 
 
     ////////////////////////////////////////////////////
@@ -51,6 +53,43 @@
 	// Reset
 	//
 	////////////////////////////////////////////////////
+
+	// r_state
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_state == RESET_ST);
+	// r_a_valid
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_a_valid         == 1'b0);
+	// r_d_ready
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_d_ready         == 1'b0);
+	// r_ack
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_ack             == 1'b0);
+	// r_busy
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_busy            == 1'b0);
+	// r_write
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_write           == 1'b0);
+	// r_addr
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_addr            == {TL_ADDR_WIDTH{1'b0}});
+	// r_wdata
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_wdata           == {TL_DATA_WIDTH{1'b0}});
+	// r_rdata_captured
+	always @(posedge i_clk)
+		if(($past(f_past_valid))&&(f_past_valid)&&(!$past(i_reset_n))&&(i_reset_n))
+			assert(r_rdata_captured  == {TL_DATA_WIDTH{1'b0}});
 
     ////////////////////////////////////////////////////
 	//

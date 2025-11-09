@@ -38,7 +38,7 @@ module tlulMaster #(
 )(
     // System
     input  logic i_clk,
-    input  logic i_reset,
+    input  logic i_reset_n,
 
     // Generic Master Interface (Handshake Protocol) 
     input  logic i_req,                             // Request signal from external module
@@ -190,7 +190,7 @@ module tlulMaster #(
 
     // Sequential Logic: Register Updates 
     always @(posedge i_clk) begin
-        if (i_reset) begin
+        if (!i_reset_n) begin
             r_state           <= RESET_ST;
             r_a_valid         <= 1'b0;
             r_d_ready         <= 1'b0;
