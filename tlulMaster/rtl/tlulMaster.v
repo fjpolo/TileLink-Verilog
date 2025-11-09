@@ -41,13 +41,13 @@ module tlulMaster #(
     input  logic i_reset,
 
     // Generic Master Interface (Handshake Protocol) 
-    input  logic i_req,            // Request signal from external module
-    output logic o_ack,            // Acknowledge signal (transaction complete)
-    output logic o_busy,           // Master is processing a transaction
-    input  logic i_write,          // 1: Write (PutFullData), 0: Read (Get)
-    input  logic [(TL_ADDR_WIDTH-1):0] i_addr,     // Transaction address
-    input  logic [(TL_DATA_WIDTH-1):0] i_wdata,    // Write data (valid if i_write=1)
-    output logic [(TL_DATA_WIDTH-1):0] o_rdata,    // Read data (valid if o_ack=1 and i_write=0)
+    input  logic i_req,                             // Request signal from external module
+    output logic o_ack,                             // Acknowledge signal (transaction complete)
+    output logic o_busy,                            // Master is processing a transaction
+    input  logic i_write,                           // 1: Write (PutFullData), 0: Read (Get)
+    input  logic [(TL_ADDR_WIDTH-1):0] i_addr,      // Transaction address
+    input  logic [(TL_DATA_WIDTH-1):0] i_wdata,     // Write data (valid if i_write=1)
+    output logic [(TL_DATA_WIDTH-1):0] o_rdata,     // Read data (valid if o_ack=1 and i_write=0)
 
     // TileLink Channel A (Request to Slave) 
     output logic o_a_valid,
