@@ -68,12 +68,12 @@ module tlulMaster #(
 );
 
     // Local Parameters for TileLink Operations 
-    localparam TL_OP_PUT_FULL_DATA = 3'b001; // Write Request
-    localparam TL_OP_GET           = 3'b100; // Read Request
-    localparam TL_OP_ACCESS_ACK    = 3'b010; // Write Acknowledge
-    localparam TL_OP_ACCESS_ACK_DATA = 3'b011; // Read Acknowledge with Data
+    localparam TL_OP_PUT_FULL_DATA = 3'b001;    // Write Request
+    localparam TL_OP_GET           = 3'b100;    // Read Request
+    localparam TL_OP_ACCESS_ACK    = 3'b010;    // Write Acknowledge
+    localparam TL_OP_ACCESS_ACK_DATA = 3'b011;  // Read Acknowledge with Data
     
-    localparam DEFAULT_SIZE        = 4'b011; // 8 bytes (64-bit)
+    localparam DEFAULT_SIZE        = 4'b011;    // 8 bytes (64-bit)
     localparam SOURCE_ID           = 8'h0A;
 
     // State Machine 
@@ -93,10 +93,10 @@ module tlulMaster #(
     
     // Registers to hold the captured transaction details
     logic r_busy;
-    logic r_write; // Now synchronous, only assigned with <=
-    logic [(TL_ADDR_WIDTH-1):0] r_addr; // Now synchronous, only assigned with <=
-    logic [(TL_DATA_WIDTH-1):0] r_wdata; // Now synchronous, only assigned with <=
-    logic [(TL_DATA_WIDTH-1):0] r_rdata_captured; // Captured read data
+    logic r_write;                                  // Now synchronous, only assigned with <=
+    logic [(TL_ADDR_WIDTH-1):0] r_addr;             // Now synchronous, only assigned with <=
+    logic [(TL_DATA_WIDTH-1):0] r_wdata;            // Now synchronous, only assigned with <=
+    logic [(TL_DATA_WIDTH-1):0] r_rdata_captured;   // Captured read data
 
     // Combinational Signals (Next State/Output Logic) 
     master_state_t r_next_state;
